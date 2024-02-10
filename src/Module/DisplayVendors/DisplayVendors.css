@@ -1,0 +1,29 @@
+.HeaderTitle{
+    color: darkgray;
+}
+
+.ListofBox{
+    border: 1px solid black;
+    border-radius: 20px;
+    box-shadow: 2px 3px 6px gray;
+    margin-bottom: 10px;
+}
+
+.ListFontSize{
+    font-size: 20px;
+    color: black;
+    font-weight: 700;
+    padding: 15px;
+}
+
+.EditBtn {
+    border-radius: 0px;
+    padding: 0%;
+}
+
+.EditBtn :hover{
+    border: 1px solid red;
+    border-radius: 0px;
+    color: black;
+    background: red;
+}

@@ -1,0 +1,11 @@
+.FormArea{
+    border: 1px solid black;
+    border-radius: 20px;
+    box-shadow: 2px 3px 6px gray;
+    margin-bottom: 10px;
+}
+
+.FormalignItem{
+    display: flex;
+    align-items: end;
+}

@@ -1,0 +1,13 @@
+.SidebarArea{
+    width: 20%;
+    background: #15CDCA;
+    text-align: center;
+    align-items: center;
+    min-height: 100vh;
+    border-right: 1px solid black;
+}
+
+.vsplogo{
+    width: 80%;
+    height: 100%;
+}
