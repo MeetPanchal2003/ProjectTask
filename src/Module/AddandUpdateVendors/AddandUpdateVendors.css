@@ -7,5 +7,10 @@
 
 .FormalignItem{
     display: flex;
-    align-items: end;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-check {
+    font-size: 20px;
 }

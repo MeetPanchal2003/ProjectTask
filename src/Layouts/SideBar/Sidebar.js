@@ -1,22 +1,16 @@
 import React from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   ExpandLess,
   ExpandMore,
@@ -26,7 +20,6 @@ import {
 } from "@mui/icons-material";
 import Collapse from "@mui/material/Collapse";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
-import Button from "@mui/material/Button";
 import "./Sidebar.css";
 import VSPlogo from "../../Assets/VSPlogo.png"; // Import your company logo component
 
@@ -74,7 +67,7 @@ export default function Sidebar({ open, onClose }) {
       >
         <div className="BrightYellow text-black">
           <DrawerHeader>
-            <img src={VSPlogo} className="vsplogo" />
+            <img src={VSPlogo} className="vsplogo" alt="vsplogo"/>
             <IconButton onClick={onClose}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />

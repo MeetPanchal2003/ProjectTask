@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Formik, FieldArray, Field } from "formik";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -55,22 +55,13 @@ const AddandUpdateVendors = () => {
         "http://localhost:3030/products/" + location.state.id
       );
       setIsUpdate(true);
-
-      // Map over vendors and transform the variants array within each vendor
       const transformedVendors = response.data.vendors.map((vendor) => ({
         ...vendor,
         variants: vendor.variants.map((variantObj) => ({
-          Variant: Object.keys(variantObj)[0], // Extracting the key as Variant
-          Variant_Number: Object.values(variantObj)[0], // Extracting the value as Variant_Number
+          Variant: Object.keys(variantObj)[0], 
+          Variant_Number: Object.values(variantObj)[0], 
         })),
       }));
-
-      console.log({
-        id: response.data.id || "",
-        name: response.data.name || "",
-        description: response.data.description || "",
-        vendors: transformedVendors,
-      });
 
       setInitialValues({
         id: response.data.id || "",
@@ -82,36 +73,7 @@ const AddandUpdateVendors = () => {
       console.error("Error fetching product by id:", error);
     }
   };
-
-  // const getProductById = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://localhost:3030/products/" + location.state.id
-  //     );
-  //     setIsUpdate(true);
-
-  //     setInitialValues({
-  //       name: response.data.name || "",
-  //       description: response.data.description || "",
-  //       vendors: response.data.vendors || [
-  //         {
-  //           nameV: "",
-  //           is_main: false,
-  //           variants: [{ Variant: "", Variant_Number: "" }],
-  //         },
-  //       ],
-  //     });
-  //   } catch (error) {
-  //     console.error("Error fetching product by id:", error);
-  //   }
-  // };
-
-  useEffect(() => {
-    if (location.state && location.state.id) {
-      getProductById();
-    }
-  }, []);
-
+  
   const handleSubmit = async (values) => {
     try {
       if (isUpdate) {
@@ -123,7 +85,7 @@ const AddandUpdateVendors = () => {
           description: values.description,
           vendors: values.vendors.map((vendor) => ({
             nameV: vendor.nameV,
-            is_main: vendor.is_main == undefined ? false : vendor.is_main,
+            is_main: vendor.is_main === undefined ? false : vendor.is_main,
             variants: vendor.variants.map((variant) => ({
               [variant.Variant]: variant.Variant_Number,
             })),
@@ -155,7 +117,7 @@ const AddandUpdateVendors = () => {
             description: values.description,
             vendors: values.vendors.map((vendor) => ({
               nameV: vendor.nameV,
-              is_main: vendor.is_main == undefined ? false : vendor.is_main,
+              is_main: vendor.is_main === undefined ? false : vendor.is_main,
               variants: vendor.variants.map((variant) => ({
                 [variant.Variant]: variant.Variant_Number,
               })),
@@ -192,6 +154,12 @@ const AddandUpdateVendors = () => {
     navigate("/VendorList");
     setModalMessage("");
   };
+
+  useEffect(() => {
+    if (location.state && location.state.id) {
+      getProductById();
+    }
+  });
 
   return (
     <div className="container">
@@ -537,7 +505,7 @@ const AddandUpdateVendors = () => {
                 }}
               </Formik>
             )
-          : isUpdate == false &&
+          : isUpdate === false &&
             !location.state && (
               <Formik
                 initialValues={{

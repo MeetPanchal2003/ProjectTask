@@ -11,7 +11,6 @@ import MuiAppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import DisplayVendors from "../Module/DisplayVendors/DisplayVendors";
 import AddandUpdateVendors from "../Module/AddandUpdateVendors/AddandUpdateVendors";
-import Home from "./HomePage/Home";
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 const drawerWidth = 240;
 
