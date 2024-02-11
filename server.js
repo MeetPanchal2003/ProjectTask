@@ -1,10 +1,11 @@
-const { createServer } = require('http');
-const { spawn } = require('child_process');
+// server.js
 
-createServer((req, res) => {
-    const jsonServer = spawn('json-server', ['--watch', 'Vendor.json']);
-    
-    jsonServer.stdout.pipe(res);
-}).listen(3030); // Adjust the port as necessary
+const jsonServer = require('json-server');
+const server = jsonServer.create();
+const router = jsonServer.router('Vendor.json');
+const middlewares = jsonServer.defaults();
 
-console.log('JSON Server running at http://localhost:3000/');
+server.use(middlewares);
+server.use(router);
+
+module.exports = server;
