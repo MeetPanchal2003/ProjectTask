@@ -1,8 +1,0 @@
-{
-  "functions": {
-    "api": {
-      "handler": "server.js",
-      "memory": 512
-    }
-  }
-}
