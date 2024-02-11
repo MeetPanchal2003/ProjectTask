@@ -87,7 +87,7 @@ export default function Sidebar({ open, onClose }) {
           <List className="pb-0">
             
             <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate("/")}>
+              <ListItemButton onClick={()=>{navigate("/"); onClose()}}>
                 <ListItemIcon>
                   <HomeIcon className="text-black" />
                 </ListItemIcon>
@@ -96,7 +96,7 @@ export default function Sidebar({ open, onClose }) {
             </ListItem>
 
             <ListItem disablePadding>
-              <ListItemButton onClick={()=>{}}>
+              <ListItemButton onClick={()=>{onClose()}}>
                 <ListItemIcon>
                   <InfoIcon className="text-black" />
                 </ListItemIcon>
@@ -105,7 +105,7 @@ export default function Sidebar({ open, onClose }) {
             </ListItem>
 
             <ListItem disablePadding>
-              <ListItemButton onClick={()=>{}}>
+              <ListItemButton onClick={()=>{onClose()}}>
                 <ListItemIcon>
                   <CallIcon className="text-black" />
                 </ListItemIcon>
