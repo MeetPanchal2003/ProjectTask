@@ -2,18 +2,18 @@
   "products": [
     {
       "id": "1",
-      "name": "kali",
-      "description": "jhbkjn",
+      "name": "Lars Gilliam",
+      "description": "Quam consequat Nost",
       "vendors": [
         {
-          "nameV": "ddddd",
+          "nameV": "Owen Hooper",
           "is_main": true,
           "variants": [
             {
-              "SM": 22
+              "XS": 926
             },
             {
-              "XL": 65
+              "SM": 838
             }
           ]
         }

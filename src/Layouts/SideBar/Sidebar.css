@@ -11,3 +11,15 @@
     width: 80%;
     height: 100%;
 }
+
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper{
+    background: rgb(248,238,0) !important;
+}
+
+.css-1nxmd3h-MuiListItem-root:active{
+    background-color: red;
+}
+
+.css-1p823my-MuiListItem-root:active{
+    background-color: red;
+}

@@ -1,3 +1,22 @@
-.pointer{
-    cursor: pointer;
+.pointer {
+  cursor: pointer;
+}
+
+.BrightYellow {
+  background-color: rgb(248, 238, 0);
+}
+
+.BlackCharcol {
+  background-color: rgb(17, 26, 36);
+}
+
+.Fullbackground {
+  min-height: 100vh;
+  background-color: rgb(17, 26, 36);
+}
+
+@media (max-width: 700px) {
+  .css-1ovb99j{
+    margin-left: 0px !important;
+  }
 }

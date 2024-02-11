@@ -1,0 +1,17 @@
+.messageFont{
+    font-size: 20px;
+    font-weight: 600
+}
+
+.HeaderFont{
+    font-size: 23px;
+    font-weight: 800
+}
+
+.modal-header{
+    border-bottom: 1px solid black;
+}
+
+.modal-footer{
+    border-top: 1px solid black;
+}

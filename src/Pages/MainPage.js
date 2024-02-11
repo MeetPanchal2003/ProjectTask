@@ -28,7 +28,8 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
-      }),
+      }
+      ),
       marginLeft: `${drawerWidth}px`,
     }),
   })
@@ -70,16 +71,17 @@ function MainPage() {
     setSidebarOpen(false);
   };
   return (
-    <div>
+    <div className="BlackCharcol">
       <Router>
         <CssBaseline />
         <AppBar position="fixed" open={sidebarOpen}>
-          <Toolbar>
+          <Toolbar className="BrightYellow">
             <IconButton
               color="inherit"
               aria-label="open drawer"
               onClick={handleSidebarOpen}
               edge="start"
+              className="text-black"
               sx={{ mr: 2, ...(sidebarOpen && { display: "none" }) }}
             >
               <MenuIcon />
@@ -91,19 +93,20 @@ function MainPage() {
               sx={{ flexGrow: 1, ml: 2 }}
               className="d-flex justify-content-end"
             >
-              <Button variant="contained" color="error" endIcon={<LogoutTwoToneIcon/>}>
-                Sign Out 
+              <Button variant="contained" color="error" onClick={()=>{alert("Are you sure you want to Sign Out")}}>
+                <LogoutTwoToneIcon/>
               </Button>
             </Typography>
           </Toolbar>
         </AppBar>
         <Sidebar open={sidebarOpen} onClose={handleSidebarClose} />
-        <Main open={sidebarOpen}>
+        <Main className="Fullbackground" open={sidebarOpen}>
           <DrawerHeader />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<DisplayVendors />} />
             <Route path="/VendorList" element={<DisplayVendors />} />
-            <Route path="/AddVendorList" element={<AddandUpdateVendors />} />
+            <Route path="/addVendor" element={<AddandUpdateVendors />} />
+            <Route path="/updateVendor" element={<AddandUpdateVendors />} />
           </Routes>
         </Main>
       </Router>
