@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import DisplayVendors from "../Module/DisplayVendors/DisplayVendors";
 import AddandUpdateVendors from "../Module/AddandUpdateVendors/AddandUpdateVendors";
 import Home from "./HomePage/Home";
-
+import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -91,8 +91,8 @@ function MainPage() {
               sx={{ flexGrow: 1, ml: 2 }}
               className="d-flex justify-content-end"
             >
-              <Button variant="contained" color="error">
-                Sign Out
+              <Button variant="contained" color="error" endIcon={<LogoutTwoToneIcon/>}>
+                Sign Out 
               </Button>
             </Typography>
           </Toolbar>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, FieldArray } from "formik";
+import { Formik, FieldArray, Field } from "formik";
 import * as Yup from "yup";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -7,128 +7,46 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import "./AddandUpdateVendors.css";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Check } from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-// const validationSchema = Yup.object().shape({
-//   name: Yup.string().required("Name is required"),
-//   vendors: Yup.array().of(
-//     Yup.object().shape({
-//       name: Yup.string().required("Vendor name is required"),
-//       variants: Yup.array().of(
-//         Yup.object().shape({
-//           name: Yup.string().required("Variant name is required"),
-//           quantity: Yup.number()
-//             .required("Quantity is required")
-//             .min(0, "Quantity must be a positive number"),
-//         })
-//       ),
-//     })
-//   ),
-// });
+const AddandUpdateVendors = () => {
 
-const AddandUpdateVendors = ({}) => {
-  const [inputs, setInputs] = React.useState([
-    { Vendor_Name: "", is_Main: false, varients: [] },
-  ]);
+  const navigate = useNavigate();
 
-  const [inputsVariant, setInputsVariant] = React.useState([
-    {
-      Variant: "",
-      Variant_Number: 0,
-      VendorIndex: inputs.length === 0 ? 0 : inputs.length - 1,
-      UniqNumber: 1,
-    },
-  ]);
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    description: Yup.string().required("Description is required"),
+    vendors: Yup.array().of(
+      Yup.object().shape({
+        nameV: Yup.string().required("Vendor name is required"),
+        is_main: Yup.boolean(),
+        variants: Yup.array().of(
+          Yup.object().shape({
+            Variant: Yup.string().required("Variant name is required"),
+            Variant_Number: Yup.number()
+              .required("Number is required")
+              .min(0, "Number must be a positive number"),
+          })
+        ),
+      })
+    ),
+  });
 
-  const handleAddInput = () => {
-    setInputs([...inputs, { Vendor_Name: "", is_Main: false ,varients: []}]);
-    setInputsVariant([
-      ...inputsVariant,
-      {
-        Variant: "",
-        Variant_Number: "",
-        VendorIndex: inputs.length === 0 ? 0 : inputs.length,
-        UniqNumber: inputsVariant[inputsVariant.length - 1].UniqNumber + 1,
-      },
-    ]);
-  };
-
-  console.log("inputs", inputs, "inputsVariant", inputsVariant);
-
-  const handleChange = (event, index) => {
-    let { name, value } = event.target;
-    let onChangeValue = [...inputs];
-    onChangeValue[index][name] = value;
-
-    const ArrayofVariants = [];
-
-    inputsVariant.map((item) => {
-      if (item.VendorIndex === index) {
-        const Value = { [item.Variant]: item.Variant_Number };
-        ArrayofVariants.push(Value);
+  const AddProduct = async (productDetails) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3030/products/",
+        productDetails
+      );
+      if (response) {
+        alert("Product add Successfully.");
+        console.log(`Product add Successfully.`);
+        navigate("/VendorList");
       }
-    });
-    onChangeValue[index]["varients"] = ArrayofVariants;
-
-    setInputs(onChangeValue);
-  };
-
-  const handleCheckbox = (event, index) => {
-    let { name, value } = event.target;
-    let onChangeValue = [...inputs];
-    onChangeValue[index][name] = event.target.checked ? true : false;
-
-    // const ArrayofVariants = [];
-
-    // inputsVariant.map((item) => {
-    //   if (item.VendorIndex === index) {
-    //     const Value = { [item.Variant]: item.Variant_Number };
-    //     ArrayofVariants.push(Value);
-    //   }
-    // });
-    // onChangeValue[index]["varients"] = ArrayofVariants;
-
-    setInputs(onChangeValue);
-  };
-
-  // const handleDeleteInput = (index) => {
-  //   const newArray = [...inputs];
-  //   newArray.splice(index, 1);
-  //   setInputs(newArray);
-  //   const removeVariant = inputsVariant.filter((val) => val.VendorIndex !== index);
-  //   // const VendorLIST = 
-  //   removeVariant.push({
-  //     Variant: "",
-  //     Variant_Number: "",
-  //     VendorIndex: index,
-  //     UniqNumber: inputsVariant[inputsVariant.length - 1].UniqNumber + 1,
-  //   });
-  //   setInputsVariant(removeVariant);
-  // };
-
-  const handleChangeVariant = (indexV, field, value, index) => {
-    const newVariantData = [...inputsVariant];
-    newVariantData[indexV][field] = value;
-    newVariantData[indexV]["VendorIndex"] = index;
-    setInputsVariant(newVariantData);
-  };
-
-  const handleAddVariantField = (index) => {
-    setInputsVariant([
-      ...inputsVariant,
-      {
-        Variant: "",
-        Variant_Number: "",
-        VendorIndex: index,
-        UniqNumber: inputsVariant[inputsVariant.length - 1].UniqNumber + 1,
-      },
-    ]);
-  };
-
-  const handleRemoveVariantField = (index) => {
-    const newVariantData = [...inputsVariant];
-    newVariantData.splice(index, 1);
-    setInputsVariant(newVariantData);
+    } catch (error) {
+      console.error("There was a problem with the delete operation:", error);
+    }
   };
 
   return (
@@ -138,203 +56,330 @@ const AddandUpdateVendors = ({}) => {
           <h2>Add Vendors</h2>
         </div>
 
-        <Form>
-          <div className="p-3 mb-3">
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Name"
-                  name="Product_Name"
-                />
-              </Form.Group>
+        <Formik
+          initialValues={{
+            name: "",
+            description: "",
+            vendors: [
+              {
+                nameV: "",
+                is_main: false,
+                variants: [{ Variant: "", Variant_Number: "" }],
+              },
+            ],
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            const response = axios.get("http://localhost:3030/products");
+            // setVendorsList(response.data);
+            response.then((res) => {
+              console.log(res);
+              var PID = (res.data.length === 0 ? 0 :JSON.parse(res.data[res.data.length - 1].id)) + 1;
+              const transformedValues = {
+                id: `${PID}`,
+                name: values.name,
+                description: values.description,
+                vendors: values.vendors.map((vendor) => ({
+                  nameV: vendor.nameV,
+                  is_main: vendor.is_main == undefined ? false : vendor.is_main,
+                  variants: vendor.variants.map((variant) => ({
+                    [variant.Variant]: variant.Variant_Number,
+                  })),
+                })),
+              };
 
-              <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Label>Discription</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  type="text"
-                  rows={1}
-                  name="Product_Discription"
-                  placeholder="Enter Discription"
-                />
-              </Form.Group>
-            </Row>
-
-            {inputs.map((item, index) => (
-              <div className="p-3 border rounded border-black mb-3" key={index}>
-                {/* <div className="d-flex justify-content-end">
-                  {inputs.length - 1 !== 0 ? (
-                    <Button
-                      variant="danger"
-                      onClick={() => {
-                        handleDeleteInput(index);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-                </div> */}
+              AddProduct(transformedValues);
+            });
+          }}
+        >
+          {({ values, errors, touched, handleChange, handleSubmit }) => (
+            <Form onSubmit={handleSubmit}>
+              <div className="p-3 mb-3">
                 <Row className="mb-3">
-                  <Form.Group
-                    as={Col}
-                    className="col-lg-9"
-                    controlId="formGridEmail"
-                  >
-                    <Form.Label>Vendor Name</Form.Label>
+                  <Form.Group as={Col} controlId="name">
+                    <Form.Label>Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter Vendor Name"
-                      name="Vendor_Name"
-                      value={item.Vendor_Name}
-                      onChange={(event) => handleChange(event, index)}
+                      name="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      isInvalid={touched.name && errors.name}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.name}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
-                  <Form.Group
-                    as={Col}
-                    className="col-lg-3 FormalignItem fs-4"
-                    id="formGridCheckbox"
-                  >
-                    <Form.Check
-                      type="checkbox"
-                      label="Is Main"
-                      name="is_Main"
-                      value={item.is_Main}
-                      onChange={(event) => handleCheckbox(event, index)}
+                  <Form.Group as={Col} controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={1}
+                      name="description"
+                      value={values.description}
+                      onChange={handleChange}
+                      isInvalid={touched.description && errors.description}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.description}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
-                <Row className="mb-3">
-                  {inputsVariant.map((field, indexV) =>
-                    field.VendorIndex === index ? (
-                      <div key={indexV} className="row mb-3">
-                        <Form.Group
-                          as={Col}
-                          className="col-lg-4"
-                          controlId="formGridEmail"
-                        >
-                          <Form.Label>Variant</Form.Label>
-                          <Form.Control
-                            as="select"
-                            name="Variant"
-                            value={field.value}
-                            onChange={(e) =>
-                              handleChangeVariant(
-                                indexV,
-                                "Variant",
-                                e.target.value,
-                                index
-                              )
-                            }
-                            custom
-                          >
-                            <option value="">Select Variant</option>
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="fiat">Fiat</option>
-                            <option value="audi">Audi</option>
-                          </Form.Control>
-                        </Form.Group>
 
-                        <Form.Group
-                          as={Col}
-                          className="col-lg-4"
-                          controlId="formGridEmail"
+                <FieldArray name="vendors">
+                  {({ push, remove }) => (
+                    <div>
+                      {values.vendors.map((vendor, vendorIndex) => (
+                        <div
+                          key={vendorIndex}
+                          className="p-3 border rounded border-black mb-3"
                         >
-                          <Form.Label>Number</Form.Label>
-                          <Form.Control
-                            type="number"
-                            placeholder="Enter Number"
-                            name="Variant_Number"
-                            value={field.value}
-                            onChange={(e) =>
-                              handleChangeVariant(
-                                indexV,
-                                "Variant_Number",
-                                e.target.value,
-                                index
-                              )
-                            }
-                          />
-                        </Form.Group>
+                          <div className="d-flex justify-content-end">
+                            {values.vendors.length > 1 && (
+                              <Button
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={() => remove(vendorIndex)}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            )}
+                          </div>
 
-                        <Form.Group
-                          as={Col}
-                          className="col-lg-4 FormalignItem"
-                          controlId="formGridEmail"
+                          <Row className="mb-3">
+                            <Form.Group
+                              as={Col}
+                              className="col-lg-9"
+                              controlId={`vendors.${vendorIndex}.nameV`}
+                            >
+                              <Form.Label>Vendor Name</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name={`vendors.${vendorIndex}.nameV`}
+                                value={vendor.nameV}
+                                onChange={handleChange}
+                                isInvalid={
+                                  touched.vendors &&
+                                  touched.vendors[vendorIndex] &&
+                                  touched.vendors[vendorIndex].nameV &&
+                                  errors.vendors &&
+                                  errors.vendors[vendorIndex] &&
+                                  errors.vendors[vendorIndex].nameV
+                                }
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {touched.vendors &&
+                                  touched.vendors[vendorIndex] &&
+                                  touched.vendors[vendorIndex].nameV &&
+                                  errors.vendors &&
+                                  errors.vendors[vendorIndex] &&
+                                  errors.vendors[vendorIndex].nameV}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+
+                            <Form.Group
+                              as={Col}
+                              className="col-lg-3 FormalignItem"
+                              controlId={`vendors.${vendorIndex}.is_main`}
+                            >
+                              <Form.Check
+                                type="checkbox"
+                                label="Is Main"
+                                name={`vendors.${vendorIndex}.is_main`}
+                                checked={vendor.is_main}
+                                onChange={handleChange}
+                              />
+                            </Form.Group>
+                          </Row>
+                          <FieldArray name={`vendors.${vendorIndex}.variants`}>
+                            {({ push: pushVariant, remove: removeVariant }) => (
+                              <div>
+                                {vendor.variants.map(
+                                  (variant, variantIndex) => (
+                                    <div
+                                      key={variantIndex}
+                                      className="row mb-3"
+                                    >
+                                      <Form.Group
+                                        as={Col}
+                                        className="col-lg-5"
+                                        controlId={`vendors.${vendorIndex}.variants.${variantIndex}.Variant`}
+                                      >
+                                        <Form.Label>Variant</Form.Label>
+                                        <Form.Select
+                                          name={`vendors.${vendorIndex}.variants.${variantIndex}.Variant`}
+                                          value={variant.Variant}
+                                          onChange={handleChange}
+                                          isInvalid={
+                                            touched.vendors &&
+                                            touched.vendors[vendorIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex].Variant &&
+                                            errors.vendors &&
+                                            errors.vendors[vendorIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex].Variant
+                                          }
+                                        >
+                                          <option value="">
+                                            Select Variant
+                                          </option>
+                                          <option value="XS">XS</option>
+                                          <option value="SM">SM</option>
+                                          <option value="L">L</option>
+                                          <option value="XL">XL</option>
+                                          <option value="XXL">XXL</option>
+                                        </Form.Select>
+                                        <Form.Control.Feedback type="invalid">
+                                          {touched.vendors &&
+                                            touched.vendors[vendorIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex].Variant &&
+                                            errors.vendors &&
+                                            errors.vendors[vendorIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex].Variant}
+                                        </Form.Control.Feedback>
+                                      </Form.Group>
+
+                                      <Form.Group
+                                        as={Col}
+                                        className="col-lg-5"
+                                        controlId={`vendors.${vendorIndex}.variants.${variantIndex}.Variant_Number`}
+                                      >
+                                        <Form.Label>Number</Form.Label>
+                                        <Form.Control
+                                          type="number"
+                                          name={`vendors.${vendorIndex}.variants.${variantIndex}.Variant_Number`}
+                                          value={variant.Variant_Number}
+                                          onChange={handleChange}
+                                          isInvalid={
+                                            touched.vendors &&
+                                            touched.vendors[vendorIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex]
+                                              .Variant_Number &&
+                                            errors.vendors &&
+                                            errors.vendors[vendorIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex]
+                                              .Variant_Number
+                                          }
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                          {touched.vendors &&
+                                            touched.vendors[vendorIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            touched.vendors[vendorIndex]
+                                              .variants[variantIndex]
+                                              .Variant_Number &&
+                                            errors.vendors &&
+                                            errors.vendors[vendorIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex] &&
+                                            errors.vendors[vendorIndex]
+                                              .variants[variantIndex]
+                                              .Variant_Number}
+                                        </Form.Control.Feedback>
+                                      </Form.Group>
+
+                                      <Col className="col-lg-2 FormalignItem justify-content-center">
+                                        {vendor.variants.length - 1 !==
+                                        variantIndex ? (
+                                          <Button
+                                            variant="danger"
+                                            onClick={() =>
+                                              removeVariant(variantIndex)
+                                            }
+                                          >
+                                            {/* <DeleteIcon /> */}
+                                            Remove
+                                          </Button>
+                                        ) : (
+                                          <Button
+                                            variant="primary"
+                                            onClick={() =>
+                                              pushVariant({
+                                                Variant: "",
+                                                Variant_Number: "",
+                                              })
+                                            }
+                                          >
+                                            Add Variant
+                                          </Button>
+                                        )}
+                                      </Col>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            )}
+                          </FieldArray>
+                        </div>
+                      ))}
+                      <div className="d-flex justify-content-center">
+                        <Button
+                          variant="primary"
+                          onClick={() =>
+                            push({
+                              Vendor_Name: "",
+                              is_Main: false,
+                              variants: [{ Variant: "", Variant_Number: "" }],
+                            })
+                          }
                         >
-                          {inputsVariant.filter(
-                            (val) => val.VendorIndex === index
-                          )[
-                            inputsVariant.filter(
-                              (val) => val.VendorIndex === index
-                            ).length - 1
-                          ].UniqNumber === field.UniqNumber ? (
-                            <Button
-                              variant="primary"
-                              onClick={() => {
-                                handleAddVariantField(index);
-                              }}
-                            >
-                              Add Variant
-                            </Button>
-                          ) : (
-                            <Button
-                              variant="danger"
-                              onClick={() => {
-                                handleRemoveVariantField(index);
-                              }}
-                            >
-                              Remove
-                            </Button>
-                          )}
-                        </Form.Group>
+                          Add Vendor
+                        </Button>
                       </div>
-                    ) : (
-                      ""
-                    )
+                    </div>
                   )}
-                </Row>
+                </FieldArray>
               </div>
-            ))}
-            <Row>
-              <Form.Group
-                as={Col}
-                className="col-lg-12 d-flex justify-content-center"
-                controlId="formGridEmail"
-              >
-                <Button variant="primary" onClick={() => handleAddInput()}>
-                  Add Vendors
-                </Button>
-              </Form.Group>
-            </Row>
-          </div>
-          <hr></hr>
-          <Row>
-              <Form.Group
-                as={Col}
-                className="col-lg-6 d-flex justify-content-center"
-                controlId="formGridEmail"
-              >
-                <Button variant="outline-danger" onClick={() => handleAddInput()}>
-                  Cancle Data
-                </Button>
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                className="col-lg-6 d-flex justify-content-center"
-                controlId="formGridEmail"
-              >
-                <Button variant="outline-primary" onClick={() => handleAddInput()}>
-                  Submit Data
-                </Button>
-              </Form.Group>
-            </Row>
-        </Form>
+              <hr />
+              <Row>
+                <Col className="col-lg-6 d-flex justify-content-center">
+                  <Button type="reset" variant="outline-danger">
+                    Cancel Data
+                  </Button>
+                </Col>
+                <Col className="col-lg-6 d-flex justify-content-center">
+                  <Button type="submit" variant="outline-primary">
+                    Submit Data
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

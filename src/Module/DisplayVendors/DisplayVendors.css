@@ -7,13 +7,43 @@
     border-radius: 20px;
     box-shadow: 2px 3px 6px gray;
     margin-bottom: 10px;
+    padding: 20px;
 }
 
-.ListFontSize{
-    font-size: 20px;
+.ProductFontSize{
+    font-size: 15px;
     color: black;
     font-weight: 700;
-    padding: 15px;
+}
+
+.AccordianHeaderFontSize{
+    font-size: 15px;
+    color: black;
+    font-weight: 700;
+}
+
+.VendorFontSize{
+    font-size: 15px;
+    color: black;
+    font-weight: 700;
+}
+
+.accordion-button:not(.collapsed){
+    font-weight: 700;
+    color: black;
+    background-color: var(--bs-accordion-active-bg);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    z-index: 3;
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.BorderBottom{
+    border-bottom: 1px solid #dcd6d6;
 }
 
 .EditBtn {
@@ -22,8 +52,7 @@
 }
 
 .EditBtn :hover{
-    border: 1px solid red;
     border-radius: 0px;
-    color: black;
+    color: white;
     background: red;
 }

@@ -1,0 +1,23 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "kali",
+      "description": "jhbkjn",
+      "vendors": [
+        {
+          "nameV": "ddddd",
+          "is_main": true,
+          "variants": [
+            {
+              "SM": 22
+            },
+            {
+              "XL": 65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
